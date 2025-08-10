@@ -1,0 +1,28 @@
+# Core framework
+Flask==3.0.3
+
+# Database ORM
+Flask-SQLAlchemy==3.1.1
+
+# Database migrations
+Flask-Migrate==4.0.7
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Password hashing
+bcrypt==4.1.2
+passlib==1.7.4
+
+# JWT authentication
+Flask-JWT-Extended==4.6.0
+PyJWT==2.8.0
+
+# Request validation
+marshmallow==3.21.2
+
+# For secure tokens (password reset, etc.)
+itsdangerous==2.1.2
+
+# Optional: For API testing
+requests==2.32.3
