@@ -2,7 +2,7 @@ from .. import database
 
 import uuid
 
-from ..utils.encrypt import hash_password , check_password
+from ..utils.security import generate_hash_password,verify_password_with_hashed_password
 
 
 class User(database.Model):
@@ -16,7 +16,7 @@ class User(database.Model):
         return f"<User {self.username}>"
 
     def set_password(self , password):
-        self.password_hash = hash_password(password)
+        self.password_hash = generate_hash_password(password)
 
-    def check_password(self , password):
-        return check_password(password,self.password_hash)
+    def validate_password(self , password):
+        return verify_password_with_hashed_password(password,self.password_hash)
