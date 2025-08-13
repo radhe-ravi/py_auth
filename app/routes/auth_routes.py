@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify, Response
+from flask_jwt_extended import get_jwt_identity
 from sqlalchemy import or_
 from .. import database
 from ..models.user import User
 from ..services.token_service import generate_jwt_token, generate_custom_refresh_token
 from app.extension import redis_client
+from app.utils.jwt_required import jwt_required
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -108,5 +110,17 @@ def refresh() -> tuple[Response, int]:
         "access_token": new_access_token
     }), 200
 
+
+@auth_bp.route("/logout", methods=["POST"])
+@jwt_required(refresh=True)
+def logout():
+    current_user = get_jwt_identity()
+    redis_key = f"refresh_token:{current_user}"
+
+    if redis_client.exists(redis_key):
+        redis_client.delete(redis_key)
+        return jsonify({"msg": "Successfully logged out"}), 200
+    else:
+        return jsonify({"msg": "No active session found"}), 400
 
 
